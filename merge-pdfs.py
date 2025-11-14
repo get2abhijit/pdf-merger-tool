@@ -17,6 +17,7 @@ def merge_pdfs_in_folder(folder_path):
     merger = PdfMerger()
     errors = []
     merged_count = 0
+    deleted_count = 0
 
     for pdf_file in pdf_files:
         pdf_path = os.path.join(folder_path, pdf_file)
@@ -42,13 +43,27 @@ def merge_pdfs_in_folder(folder_path):
             print("Errors:")
             for err in errors:
                 print(f"  - {err}")
+        if delete_originals:
+            for pdf_file in pdf_files:
+                pdf_path = os.path.join(folder_path, pdf_file)
+                try:
+                    os.remove(pdf_path)
+                    deleted_count += 1
+                except Exception as e:
+                    print(f"Failed to delete '{pdf_file}': {e}")
+            print(f"Deleted {deleted_count} original PDF files.")
     except Exception as e:
         print(f"Error writing merged PDF: {e}")
 
 if __name__ == "__main__":
-    if len(sys.argv) == 2:
-        folder = sys.argv[1]
-    else:
-        folder = os.getcwd()
+    import argparse
+    parser = argparse.ArgumentParser(description="Merge all PDFs in a folder into one PDF.")
+    parser.add_argument("folder", nargs="?", default=os.getcwd(), help="Folder containing PDF files (default: current directory)")
+    parser.add_argument("--delete", action="store_true", help="Delete original PDF files after merge")
+    args = parser.parse_args()
+
+    folder = args.folder
+    delete_originals = args.delete
+    if args.folder == os.getcwd():
         print(f"No folder argument provided. Using current directory: {folder}")
     merge_pdfs_in_folder(folder)

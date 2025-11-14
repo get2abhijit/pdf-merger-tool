@@ -36,18 +36,19 @@ pip install PyPDF2
 ## Usage
 ### Run as Python Script
 ```
-python merge-pdfs.py <folder_path>
+python merge-pdfs.py <folder_path> [--delete]
 ```
 - If `<folder_path>` is omitted, the script merges PDFs in the current directory.
+- Add the optional `--delete` flag to delete original PDF files after merging. This flag is OFF by default.
 
 ### Example
 ```
-python merge-pdfs.py C:\Users\YourName\Documents\PDFs
+python merge-pdfs.py C:\Users\YourName\Documents\PDFs --delete
 ```
 
 ### Output
 - Merged PDF will be saved as `PDFs.pdf` (or `PDFs_1.pdf`, etc. if a conflict exists) in the same folder.
-- Console output shows how many files were merged and any errors.
+- Console output shows how many files were merged, how many were deleted (if `--delete` is used), and any errors.
 
 ## Create a Standalone Executable (Windows)
 1. Ensure your virtual environment is activated.
@@ -58,8 +59,9 @@ python merge-pdfs.py C:\Users\YourName\Documents\PDFs
 3. The executable will be created in the `dist` folder.
 4. You can now run the `.exe` file without Python installed:
    ```
-   dist\merge-pdfs.exe <folder_path>
+   dist\merge-pdfs.exe <folder_path> [--delete]
    ```
+   - Add `--delete` to remove original PDFs after merging.
 
 ## Troubleshooting
 - If you see missing import errors, ensure you are running the script inside the virtual environment.
